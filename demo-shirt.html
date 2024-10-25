@@ -12,6 +12,23 @@
             top: 20px;
             left: 20px;
         }
+        /* Loading spinner styles */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -20,6 +37,9 @@
         <button onclick="changeColor('blue')">Blue</button>
         <button onclick="changeColor('green')">Green</button>
     </div>
+
+    <!-- Loading spinner -->
+    <div id="loadingSpinner" class="loading"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
@@ -42,6 +62,9 @@
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Add ambient light
         scene.add(ambientLight);
 
+        // Show the loading spinner when the page is loading
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
         // Load the shirt model using OBJLoader
         const loader = new THREE.OBJLoader();
         loader.load('shirt.obj', function (object) {
@@ -57,6 +80,7 @@
             });
 
             scene.add(shirt);
+            loadingSpinner.style.display = 'none'; // Hide the loading spinner once the model is loaded
         }, undefined, function (error) {
             console.error(error);
         });
